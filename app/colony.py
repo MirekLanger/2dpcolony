@@ -10,16 +10,6 @@ class Colony:
         self.toConcat2env = []
         self.agent = [self.Agent(self, agents[i]['contents'], agents[i]['programs'],agents[i]['coordinates']) for i in range(self.numAgents)]
 
-#    def getVicinity(self, i, j):
-#        vicinity = []
-#       for i in range(i - 1, i + 2):
-#            for j in range(j - 1, j + 2):
-#                vicinity.append(self.envMatrix[i][j])
-#        return vicinity
-
-#    def getEnvironmentContent(self, i, j):
-#        return self.envMatrix[i][j]
-
     def initComputationalStep(self):
         self.toConcat2env = []
 
