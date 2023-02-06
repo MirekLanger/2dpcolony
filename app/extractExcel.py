@@ -6,11 +6,13 @@ def readParameters(wb):
     envColums = int(parametersSheet.cell(row=2, column=2).value)
     envRules = int(parametersSheet.cell(row=3, column=2).value)
     agents = int(parametersSheet.cell(row=4, column=2).value)
+    steps = int(parametersSheet.cell(row=5, column=2).value)
     return {
         'envRows': envRows,
         'envColumns': envColums,
         'envRules': envRules,
-        'agents': agents
+        'agents': agents,
+        'steps': steps
     }
 
 def readEnvironment(wb, rows, columns, rules):

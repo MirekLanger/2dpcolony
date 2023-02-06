@@ -1,6 +1,6 @@
 import random
 
-class Colonie:
+class Colony:
     def __init__(self, environment, agents):
         self.envMatrix = environment['matrix']
         self.rowsEnv = len(self.envMatrix)
@@ -60,7 +60,7 @@ class Colonie:
             agentIndex = agentIndexList.pop(random.randrange(len(agentIndexList)))
             self.agent[agentIndex].applyProgram()
 
-    def colonieStep(self):
+    def colonyStep(self):
         self.initComputationalStep()
         self.agentsAct()
         self.evolveEnvironmet()
@@ -70,22 +70,19 @@ class Colonie:
         def __init__(self, col, contents, programs, coordinates):
             self.contents = contents
             self.programs = programs
-            self.numObjects = len(contents)
-            self.numPorgrams = len(programs)
-            self.numRules = len(programs[0])
             self.coordinates = coordinates
             self.vicinityLength = 9
-            self.colonie = col
+            self.colony = col
 
         def getVicinity(self):
             vicinity = []
             for i in range(self.coordinates['i'] - 1, self.coordinates['i'] + 2):
                 for j in range(self.coordinates['j'] - 1, self.coordinates['j'] + 2):
-                    vicinity.append(self.colonie.envMatrix[i][j])
+                    vicinity.append(self.colony.envMatrix[i][j])
             return vicinity
 
         def getEnvironmentContent(self):
-            return self.colonie.envMatrix[self.coordinates['i']][self.coordinates['j']]
+            return self.colony.envMatrix[self.coordinates['i']][self.coordinates['j']]
 
         def getApplicablePrograms(self):
             aplicablePorgrams = []
@@ -145,10 +142,10 @@ class Colonie:
                         self.contents.remove(rule['left'])
                         self.contents += rule['right']
                         if rule['right'] != 'e':
-                            self.colonie.envMatrix[self.coordinates['i']][self.coordinates['j']].remove(rule['right'])
+                            self.colony.envMatrix[self.coordinates['i']][self.coordinates['j']].remove(rule['right'])
                         insert2env = {
                             'position':self.coordinates,
                             'symbol':rule['left']
                         }
-                        self.colonie.toConcat2env.append(insert2env)
+                        self.colony.toConcat2env.append(insert2env)
 
