@@ -4,12 +4,12 @@ import random
 def readParameters(wb):
     parametersSheet = wb['Parameters']
     envRows = int(parametersSheet.cell(row=1, column=2).value)
-    envColums = int(parametersSheet.cell(row=2, column=2).value)
+    envColumns = int(parametersSheet.cell(row=2, column=2).value)
     envRules = int(parametersSheet.cell(row=3, column=2).value)
     steps = int(parametersSheet.cell(row=4, column=2).value)
     return {
         'envRows': envRows,
-        'envColumns': envColums,
+        'envColumns': envColumns,
         'envRules': envRules,
         'steps': steps
     }
@@ -33,7 +33,7 @@ def readEnvironment(wb, rows, columns, rules):
         'rules': envRules
     }
 
-def readAgents(wb):
+def readAgents(wb, rows, columns):
     agentsSheet  = wb['Agents']
     agents = []
     lineIndex = 1
@@ -44,9 +44,15 @@ def readAgents(wb):
             programs = []
             agent['id'] = agentsSheet.cell(row=lineIndex, column=3).value
             agent['contents'] = agentsSheet.cell(row=lineIndex, column=5).value.split(',')
+            row = int(agentsSheet.cell(row=lineIndex, column=7).value)
+            col = int(agentsSheet.cell(row=lineIndex, column=9).value)
+            if row == -1:
+                row = random.randrange(1, rows)
+            if col == -1:
+                col = random.randrange(1, columns)
             agent['coordinates'] = {
-                'i': int(agentsSheet.cell(row=lineIndex, column=7).value),
-                'j': int(agentsSheet.cell(row=lineIndex, column=9).value)
+                'i': row,
+                'j': col
             }
             agent['copies'] = int(agentsSheet.cell(row=lineIndex, column=11).value)
         #definition of a program begins
@@ -85,7 +91,7 @@ def getColonie(path):
     wb = openpyxl.load_workbook(path, data_only=True)
     parameters = readParameters(wb)
     environment = readEnvironment(wb, parameters['envRows'], parameters['envColumns'], parameters['envRules'])
-    agents = readAgents(wb)
+    agents = readAgents(wb, parameters['envRows'], parameters['envColumns'])
     return {
         'parameters': parameters,
         'environment': environment,
