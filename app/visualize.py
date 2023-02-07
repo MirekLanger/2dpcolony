@@ -16,7 +16,7 @@ def initPopulation(rows, cols, acoordinates):
             popData[coord_i][coord_j]=1.0 #Agent is not out of the env
     return popData
 
-def updatePlot(initplot,popData): # function to update 2D plot
+def updatePlot(initplot,popData, animation_delay): # function to update 2D plot
     initplot.set_data(popData)
     rect=mpatches.Rectangle((3-0.5,3-0.5),1,1, fill = False, color = "red",linewidth = 1)
     pyplot.gca().add_patch(rect)

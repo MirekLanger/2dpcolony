@@ -18,7 +18,7 @@ def main():
         colony.colonyStep()
         coords = [o.coordinates for o in colony.agent]
         popData = visualize.initPopulation(colony.rowsEnv, colony.colsEnv, coords)
-        visualize.updatePlot(initplot,popData)
+        visualize.updatePlot(initplot,popData, colonieDefinition['parameters']['animationDelay'])
     visualize.endOfVisualization(initplot, popData)
 
     print(colony.envMatrix)

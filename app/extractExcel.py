@@ -7,11 +7,13 @@ def readParameters(wb):
     envColumns = int(parametersSheet.cell(row=2, column=2).value)
     envRules = int(parametersSheet.cell(row=3, column=2).value)
     steps = int(parametersSheet.cell(row=4, column=2).value)
+    animationDelay = float(parametersSheet.cell(row=5, column=2).value)
     return {
         'envRows': envRows,
         'envColumns': envColumns,
         'envRules': envRules,
-        'steps': steps
+        'steps': steps,
+        'animationDelay': animationDelay
     }
 
 def readEnvironment(wb, rows, columns, rules):
