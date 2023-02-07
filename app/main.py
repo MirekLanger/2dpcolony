@@ -1,5 +1,5 @@
-#definitionFile = 'D:\\personal\\vsb\projekty\\aco_simulator\\2dpcolony\\colonie.xlsx'
-definitionFile = 'C:\\Users\\valeodan\\Desktop\\develop\\New\\2dpcolony-main\\colony.xlsx'
+definitionFile = 'D:\\personal\\vsb\projekty\\aco_simulator\\2dpcolony\\colony.xlsx'
+#definitionFile = 'C:\\Users\\valeodan\\Desktop\\develop\\New\\2dpcolony-main\\colony.xlsx'
 
 import extractExcel
 import colony as col
@@ -23,10 +23,10 @@ def main():
 
     print(colony.envMatrix)
     coords = [o.coordinates for o in colony.agent]
-    print (coords)
+    print(coords)
     res = (visualize.initPopulation(colony.rowsEnv, colony.colsEnv, coords))
     for i in res:
-        print (i)
+        print(i)
     for a in colony.agent:
         print("Agent:")
         print(a.contents)
