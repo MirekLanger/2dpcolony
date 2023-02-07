@@ -1,12 +1,13 @@
-definitionFile = 'D:\\personal\\vsb\projekty\\aco_simulator\\2dpcolony\\colony.xlsx'
-#definitionFile = 'C:\\Users\\valeodan\\Desktop\\develop\\New\\2dpcolony-main\\colony.xlsx'
-
 import extractExcel
 import colony as col
 import visualize
+import sys
 
-
-def main():
+def main(args = sys.argv[1:]):
+    if len(args):
+        definitionFile = str(args[0])
+    else:
+        definitionFile = 'colony.xlsx'
     colonieDefinition = extractExcel.getColonie(definitionFile)
     colony = col.Colony(colonieDefinition['environment'], colonieDefinition['agents'])
     step = 0
