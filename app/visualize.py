@@ -21,18 +21,27 @@ def initPopulation(rows, cols, acoordinates, defaultPosition=False):
         coord_j = coordinates.get("i")-1
         if coord_i in range (0,rows) and coord_j in range (0,cols):
             popData[coord_i][coord_j]=1.0 #Agent is not out of the env
-            if defaultPosition:
-                showDefaultPosition(coord_i,coord_j)
+    showDefaultPosition(acoordinates[0].get("j")-1,acoordinates[0].get("i")-1, defaultPosition)
     return popData
 
-def updatePlot(step,initplot,popData, animation_delay): # function to update 2D plot
+def updatePlot(step,initplot,popData, envMatrix,animation_delay): # function to update 2D plot
     initplot.set_data(popData)
     pyplot.title("Iteration "+str(step),
                 fontsize = 24)
-    #rect=mpatches.Rectangle((3-0.5,3-0.5),1,1, fill = False, color = "red",linewidth = 1)
-    #pyplot.gca().add_patch(rect)
+    markInterest(envMatrix)
     pyplot.pause(animation_delay)
-    #[p.remove() for p in reversed(pyplot.gca().patches)]
+
+def markInterest(envMatrix):
+    defPos=pyplot.gca().patches.pop(0)
+    [p.remove() for p in reversed(pyplot.gca().patches)]
+    pyplot.gca().add_patch(defPos) 
+    for i,row in enumerate(envMatrix):
+        for j,col in enumerate(row):
+            for object in col:
+                if str(object)=='h':
+                    clr="green"
+                    rect=mpatches.Rectangle((int(j)-0.5,int(i)-0.5),1,1, fill = False, color = clr,linewidth = 1)
+                    pyplot.gca().add_patch(rect)
 """    
 Hint: Colour settings:
                 clrs = {0:"aquamarine", 1:"mediumaquamarine", 2:"lightgreen", 3:"greenyellow", 4:"yellowgreen", 5:"olivedrab", 6:"seagreen",7:"darkgreen", 8:"olive"};
@@ -46,8 +55,10 @@ Hint: Colour settings:
                 #[p.remove() for p in reversed(pyplot.gca().patches)]
 """
 
-def showDefaultPosition(x,y):
-    rect=mpatches.Rectangle((y-0.5,x-0.5),1,1, fill = False, color = "red",linewidth = 1)
+def showDefaultPosition(x,y,visible):
+    lwidth=0
+    if visible: lwidth=1
+    rect=mpatches.Rectangle((y-0.5,x-0.5),1,1, fill = False, color = "red",linewidth = lwidth)
     pyplot.gca().add_patch(rect)
 
 def initVizualiser(numSteps, rowsEnv, colsEnv, aCoords):

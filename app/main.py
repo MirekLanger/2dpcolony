@@ -24,11 +24,11 @@ def main(args = sys.argv[1:]):
         colony.colonyStep()
         agentCoords = [o.coordinates for o in colony.agent]
         popData = visualize.initPopulation(colony.rowsEnv, colony.colsEnv, agentCoords)
-        visualize.updatePlot(step, initplot,popData, colonieDefinition['parameters']['animationDelay'])
+        visualize.updatePlot(step, initplot,popData,colony.envMatrix, colonieDefinition['parameters']['animationDelay'])
 
     visualize.endOfVisualization(initplot, popData)
 
-    #print(colony.envMatrix) 
+    print(colony.envMatrix) 
     for a in colony.agent: #Print the last configuration of the agent / can be commented
         print("Agent:")
         print(a.contents)
