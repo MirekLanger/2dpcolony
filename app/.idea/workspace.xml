@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="3af36683-bf1f-4ebd-9e4c-9856f7c5c5bc" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colony.py" beforeDir="false" afterPath="$PROJECT_DIR$/colony.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/colony.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/colony.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/extractExcel.py" beforeDir="false" afterPath="$PROJECT_DIR$/extractExcel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../colony.xlsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

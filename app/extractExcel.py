@@ -8,12 +8,18 @@ def readParameters(wb):
     envRules = int(parametersSheet.cell(row=3, column=2).value)
     steps = int(parametersSheet.cell(row=4, column=2).value)
     animationDelay = float(parametersSheet.cell(row=5, column=2).value)
+    jokerIndex = 8
+    jokerSymbols = {}
+    while parametersSheet.cell(row=jokerIndex, column=1).value != 'JokerSymbolsEnd':
+        jokerSymbols[str(parametersSheet.cell(row=jokerIndex, column=2).value)] = str(parametersSheet.cell(row=jokerIndex, column=3).value).split(',')
+        jokerIndex += 1
     return {
         'envRows': envRows,
         'envColumns': envColumns,
         'envRules': envRules,
         'steps': steps,
-        'animationDelay': animationDelay
+        'animationDelay': animationDelay,
+        'jokerSymbols': jokerSymbols
     }
 
 def readEnvironment(wb, rows, columns, rules):
@@ -21,13 +27,13 @@ def readEnvironment(wb, rows, columns, rules):
     envMatrix = [['e' for j in range(columns)] for i in range(rows)]
     for i in range(1, rows + 1):
         for j in range(1, columns + 1):
-            envMatrix[i-1][j-1] = environmentSheet.cell(row=i, column=j).value.split(',')
+            envMatrix[i-1][j-1] = str(environmentSheet.cell(row=i, column=j).value).split(',')
     envRulesSheet = wb['Environment_rules']
     envRules = []
     for i in range(1, rules + 1):
         rule = {
-            'left': envRulesSheet.cell(row=i, column=1).value.split(','),
-            'right': envRulesSheet.cell(row=i, column=3).value.split(',')
+            'left': str(envRulesSheet.cell(row=i, column=1).value).split(','),
+            'right': str(envRulesSheet.cell(row=i, column=3).value).split(',')
         }
         envRules.append(rule)
     return {
@@ -45,7 +51,7 @@ def readAgents(wb, rows, columns):
             agent = {}
             programs = []
             agent['id'] = agentsSheet.cell(row=lineIndex, column=3).value
-            agent['contents'] = agentsSheet.cell(row=lineIndex, column=5).value.split(',')
+            agent['contents'] = str(agentsSheet.cell(row=lineIndex, column=5).value).split(',')
             row = int(agentsSheet.cell(row=lineIndex, column=7).value)
             col = int(agentsSheet.cell(row=lineIndex, column=9).value)
             if row == -1:
@@ -68,7 +74,7 @@ def readAgents(wb, rows, columns):
                 'right':agentsSheet.cell(row=lineIndex, column=5).value
             }
             if rule['operator'] in ['u', 'd', 'l', 'r']:
-                rule['left'] = agentsSheet.cell(row=lineIndex, column=3).value.split(',')
+                rule['left'] = str(agentsSheet.cell(row=lineIndex, column=3).value).split(',')
             else:
                 rule['left'] = agentsSheet.cell(row=lineIndex, column=3).value
             program.append(rule)
@@ -88,6 +94,7 @@ def readAgents(wb, rows, columns):
                 agents.append(agent)
         lineIndex += 1
     return agents
+
 
 def getColonie(path):
     wb = openpyxl.load_workbook(path, data_only=True)

@@ -9,7 +9,7 @@ def main(args = sys.argv[1:]):
     else:
         definitionFile = 'colony.xlsx'
     colonieDefinition = extractExcel.getColonie(definitionFile)
-    colony = col.Colony(colonieDefinition['environment'], colonieDefinition['agents'])
+    colony = col.Colony(colonieDefinition['environment'], colonieDefinition['agents'], colonieDefinition['parameters']['jokerSymbols'])
     step = 0
     steps = colonieDefinition['parameters']['steps']
     initplot = visualize.initVizualiser()

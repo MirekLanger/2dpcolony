@@ -1,14 +1,15 @@
 import random
 
 class Colony:
-    def __init__(self, environment, agents):
+    def __init__(self, environment, agents, jokerSymbols):
         self.envMatrix = environment['matrix']
         self.rowsEnv = len(self.envMatrix)
         self.colsEnv = len(self.envMatrix[0])
         self.envRules = environment['rules']
         self.numAgents = len(agents)
         self.toConcat2env = []
-        self.agent = [self.Agent(self, agents[i]['contents'], agents[i]['programs'],agents[i]['coordinates']) for i in range(self.numAgents)]
+        self.jokerSymbols = jokerSymbols
+        self.agent = [self.Agent(self, agents[i]['contents'], agents[i]['programs'], agents[i]['coordinates'], jokerSymbols) for i in range(self.numAgents)]
 
     def initComputationalStep(self):
         self.toConcat2env = []
@@ -57,12 +58,13 @@ class Colony:
         self.add2environment()
 
     class Agent:
-        def __init__(self, col, contents, programs, coordinates):
+        def __init__(self, col, contents, programs, coordinates, jokerSymbols):
             self.contents = contents
             self.programs = programs
             self.coordinates = coordinates
             self.vicinityLength = 9
             self.colony = col
+            self.jokerSymbols = jokerSymbols
 
         def getVicinity(self):
             vicinity = []
