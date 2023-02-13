@@ -15,23 +15,23 @@ parameters of visualizer:
 animation_delay = 0.915 # pause between displaying new iteration in seconds [default: 0.15]
 
 def initPopulation(rows, cols, acoordinates, defaultPosition=False):
-    popData = [[0.0 for j in range(0,cols)] for i in range(0,rows)]
+    popData = [[0.0 for j in range(0, cols)] for i in range(0, rows)]
     for coordinates in acoordinates:
         coord_i = coordinates.get("j")-1 #switch j and i
         coord_j = coordinates.get("i")-1
-        if coord_i in range (0,rows) and coord_j in range (0,cols):
+        if coord_i in range(0, rows) and coord_j in range (0,cols):
             popData[coord_i][coord_j]=1.0 #Agent is not out of the env
-    showDefaultPosition(acoordinates[0].get("j")-1,acoordinates[0].get("i")-1, defaultPosition)
+    showDefaultPosition(acoordinates[0].get("j")-1, acoordinates[0].get("i")-1, defaultPosition)
     return popData
 
-def updatePlot(step,initplot,popData, envMatrix,animation_delay): # function to update 2D plot
+def updatePlot(step, initplot, popData, envMatrix, animation_delay, colors): # function to update 2D plot
     initplot.set_data(popData)
     pyplot.title("Iteration "+str(step),
                 fontsize = 24)
-    markInterest(envMatrix)
+    markInterest(envMatrix, colors)
     pyplot.pause(animation_delay)
 
-def markInterest(envMatrix,visibleObjects={"h":"green", "a":"purple", "j": "orange"}):
+def markInterest(envMatrix,visibleObjects={"h":"green", "a":"purple", "j": "orange"}, colors):
     defPos=pyplot.gca().patches.pop(0)
     [p.remove() for p in reversed(pyplot.gca().patches)]
     pyplot.gca().add_patch(defPos) 
@@ -40,7 +40,7 @@ def markInterest(envMatrix,visibleObjects={"h":"green", "a":"purple", "j": "oran
             for object in col:
                 if str(object) in visibleObjects:
                     clr=visibleObjects[str(object)]
-                    rect=mpatches.Rectangle((int(j)-0.5,int(i)-0.5),1,1, fill = False, color = clr,linewidth = 1)
+                    rect=mpatches.Rectangle((int(j)-0.5, int(i)-0.5), 1, 1, fill=False, color=clr, linewidth=1)
                     pyplot.gca().add_patch(rect)
 """    
 Hint: Colour settings:

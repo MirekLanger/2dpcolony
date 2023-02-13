@@ -8,18 +8,24 @@ def readParameters(wb):
     envRules = int(parametersSheet.cell(row=3, column=2).value)
     steps = int(parametersSheet.cell(row=4, column=2).value)
     animationDelay = float(parametersSheet.cell(row=5, column=2).value)
-    jokerIndex = 8
+    rowIndex = 8
     jokerSymbols = {}
-    while parametersSheet.cell(row=jokerIndex, column=1).value != 'JokerSymbolsEnd':
-        jokerSymbols[str(parametersSheet.cell(row=jokerIndex, column=2).value)] = str(parametersSheet.cell(row=jokerIndex, column=3).value).split(',')
-        jokerIndex += 1
+    while parametersSheet.cell(row=rowIndex, column=1).value != 'JokerSymbolsEnd':
+        jokerSymbols[str(parametersSheet.cell(row=rowIndex, column=2).value)] = str(parametersSheet.cell(row=rowIndex, column=3).value).split(',')
+        rowIndex += 1
+    rowIndex += 1
+    colorSettings = {}
+    while parametersSheet.cell(row=rowIndex, column=1).value != 'ColorSettingsEnd':
+        colorSettings[str(parametersSheet.cell(row=rowIndex, column=2).value)] = str(parametersSheet.cell(row=rowIndex, column=3).value).strip()
+        rowIndex += 1
     return {
         'envRows': envRows,
         'envColumns': envColumns,
         'envRules': envRules,
         'steps': steps,
         'animationDelay': animationDelay,
-        'jokerSymbols': jokerSymbols
+        'jokerSymbols': jokerSymbols,
+        'colorSettings': colorSettings
     }
 
 def readEnvironment(wb, rows, columns, rules):
@@ -86,7 +92,7 @@ def readAgents(wb, rows, columns):
             agent['programs'] = programs
             if agent['copies'] > 2:
                 id = agent['id']
-                for i in range (agent['copies']):
+                for i in range(agent['copies']):
                     agent['id'] += id + '_' + str(i)
                     print(agent['id'])
                     agents.append(agent)

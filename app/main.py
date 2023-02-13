@@ -5,14 +5,16 @@ import sys
 import os
 
 
-def main(args = sys.argv[1:]):
+def main(args=sys.argv[1:]):
     if len(args):
         definitionFile = str(args[0])
     else:
         pyDir = os.path.dirname(os.path.realpath(__file__)) #Get directory of the current .py script
         definitionFile = pyDir + '\\colony.xlsx'
     colonieDefinition = extractExcel.getColonie(definitionFile)
-    colony = col.Colony(colonieDefinition['environment'], colonieDefinition['agents'], colonieDefinition['parameters']['jokerSymbols'])
+    colony = col.Colony(colonieDefinition['environment'], colonieDefinition['agents'],
+                        colonieDefinition['parameters']['jokerSymbols']
+                        )
     step = 0
     steps = colonieDefinition['parameters']['steps']
     agentCoords = [o.coordinates for o in colony.agent]
@@ -24,7 +26,10 @@ def main(args = sys.argv[1:]):
         colony.colonyStep()
         agentCoords = [o.coordinates for o in colony.agent]
         popData = visualize.initPopulation(colony.rowsEnv, colony.colsEnv, agentCoords)
-        visualize.updatePlot(step, initplot,popData,colony.envMatrix, colonieDefinition['parameters']['animationDelay'])
+        visualize.updatePlot(step, initplot, popData, colony.envMatrix,
+                             colonieDefinition['parameters']['animationDelay'],
+                             colonieDefinition['parameters']['colorSettings']
+                             )
 
     visualize.endOfVisualization(initplot, popData)
 
