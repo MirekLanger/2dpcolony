@@ -28,18 +28,19 @@ def updatePlot(step, initplot, popData, envMatrix, animation_delay, colors): # f
     initplot.set_data(popData)
     pyplot.title("Iteration "+str(step),
                 fontsize = 24)
+    print (colors)
     markInterest(envMatrix, colors)
     pyplot.pause(animation_delay)
 
-def markInterest(envMatrix,visibleObjects={"h":"green", "a":"purple", "j": "orange"}, colors):
+def markInterest(envMatrix,visibleObjectsColors):
     defPos=pyplot.gca().patches.pop(0)
     [p.remove() for p in reversed(pyplot.gca().patches)]
     pyplot.gca().add_patch(defPos) 
     for i,row in enumerate(envMatrix):
         for j,col in enumerate(row):
             for object in col:
-                if str(object) in visibleObjects:
-                    clr=visibleObjects[str(object)]
+                if str(object) in visibleObjectsColors:
+                    clr=visibleObjectsColors[str(object)]
                     rect=mpatches.Rectangle((int(j)-0.5, int(i)-0.5), 1, 1, fill=False, color=clr, linewidth=1)
                     pyplot.gca().add_patch(rect)
 """    
