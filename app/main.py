@@ -38,7 +38,6 @@ def main(args=sys.argv[1:]):
         print("Agent:")
         print(a.contents)
         print(a.coordinates.get("i"), a.coordinates.get("j"))
-
     #print(colony.agent[0].contents)
     #print(colony.agent[0].coordinates)
     #print(colony.agent[1].contents)

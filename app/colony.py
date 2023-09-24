@@ -9,7 +9,8 @@ class Colony:
         self.numAgents = len(agents)
         self.toConcat2env = []
         self.jokerSymbols = jokerSymbols
-        self.agent = [self.Agent(self, agents[i]['contents'], agents[i]['programs'], agents[i]['coordinates'], jokerSymbols) for i in range(self.numAgents)]
+        self.agent = [self.Agent(self, agents[i]['id'], agents[i]['contents'], agents[i]['programs'], agents[i]['coordinates'], jokerSymbols) for i in range(self.numAgents)]
+        self.log = []
 
     def initComputationalStep(self):
         self.toConcat2env = []
@@ -64,7 +65,8 @@ class Colony:
         self.add2environment()
 
     class Agent:
-        def __init__(self, col, contents, programs, coordinates, jokerSymbols):
+        def __init__(self, col, agentId, contents, programs, coordinates, jokerSymbols):
+            self.agentId = agentId
             self.contents = contents
             self.programs = programs
             self.coordinates = coordinates
@@ -88,14 +90,25 @@ class Colony:
             innerObjects = self.contents[:]
             envContent = self.getEnvironmentContent()[:]
             for rule in program:
-                # get type of a rule
+                # get a type of the rule
                 # motion
                 if rule['operator'] in ['u', 'd', 'r', 'l']:
                     vicinity = self.getVicinity()
                     for i in range(self.vicinityLength):
-                        if not (rule['left'][i] in (vicinity[i] + ['e'])):
-                            allRulesAplicable = 0
-                            break
+                        #analyze the symbol... is it joker?
+                        if rule['left'][i] in self.jokerSymbols.keys():
+                            # joker symbol - at least one of the symbol must be in the environment
+                            jokerNotInEnv = True
+                            for jokerItem in self.jokerSymbols[rule['left'][i]]:
+                                if jokerItem in (vicinity[i] + ['e']):
+                                    jokerNotInEnv = False
+                            if jokerNotInEnv:
+                                allRulesAplicable
+                                break
+                        else:
+                            if not (rule['left'][i] in (vicinity[i] + ['e'])):
+                                allRulesAplicable = 0
+                                break
                 # evolving
                 elif (rule['operator'] == '>'):
                     if (rule['left'] in innerObjects):
@@ -119,6 +132,7 @@ class Colony:
             for program in self.programs:
                 if self.isProgramApplicable(program):
                     self.applicablePrograms.append(program)
+            print(self.agentId, ' ', self.applicablePrograms)
 
         def applyRandomProgram(self):
             if self.applicablePrograms:

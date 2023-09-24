@@ -68,7 +68,7 @@ def readAgents(wb, rows, columns):
                 'i': row,
                 'j': col
             }
-            agent['copies'] = int(agentsSheet.cell(row=lineIndex, column=11).value)
+            copies = int(agentsSheet.cell(row=lineIndex, column=11).value)
         #definition of a program begins
         if agentsSheet.cell(row=lineIndex, column=2).value == 'programBegin':
             program = []
@@ -90,15 +90,15 @@ def readAgents(wb, rows, columns):
         #definition of an agent ends
         if agentsSheet.cell(row=lineIndex, column=1).value == 'AgentEnd':
             agent['programs'] = programs
-            if agent['copies'] > 2:
-                id = agent['id']
-                for i in range(agent['copies']):
-                    agent['id'] += id + '_' + str(i)
-                    print(agent['id'])
+            id = agent['id']
+            if copies > 1:
+                for i in range(copies):
+                    agent['id'] = id + '_' + str(i)
                     agents.append(agent)
             else:
                 agents.append(agent)
         lineIndex += 1
+    print(agents)
     return agents
 
 
