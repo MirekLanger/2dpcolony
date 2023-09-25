@@ -31,8 +31,8 @@ class Colony:
         return applicableRules
 
     def evolveEnvironmet(self):
-        for i in range(self.rowsEnv):
-            for j in range(self.colsEnv):
+        for i in range(1, self.rowsEnv):
+            for j in range(1, self.colsEnv):
                 applicableRules = self.getApplicableRules(i, j)
                 if applicableRules:
                     cell = self.envMatrix[i][j]
