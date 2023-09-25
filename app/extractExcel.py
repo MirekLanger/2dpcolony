@@ -30,10 +30,11 @@ def readParameters(wb):
 
 def readEnvironment(wb, rows, columns, rules):
     environmentSheet = wb['Environment']
-    envMatrix = [['e' for j in range(columns)] for i in range(rows)]
+    # make a boundary of the environmant from an empty strings
+    envMatrix = [['' for j in range(columns+2)] for i in range(rows+2)]
     for i in range(1, rows + 1):
         for j in range(1, columns + 1):
-            envMatrix[i-1][j-1] = str(environmentSheet.cell(row=i, column=j).value).split(',')
+            envMatrix[i][j] = str(environmentSheet.cell(row=i, column=j).value).split(',')
     envRulesSheet = wb['Environment_rules']
     envRules = []
     for i in range(1, rules + 1):
