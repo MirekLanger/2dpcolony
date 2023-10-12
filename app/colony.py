@@ -108,7 +108,8 @@ class Colony:
                         else:
                             print (i,self.getVicinity(), vicinity[i])
                             if len(vicinity[i])==0: #vinicity symbol is empty because the agent is on the border of the environment
-                                vicinity[i]=['e']
+                                allRulesAplicable = 0 #agent cannot move
+                                break
                             if not (rule['left'][i] in (vicinity[i] + ['e'])):
                                 allRulesAplicable = 0
                                 break
