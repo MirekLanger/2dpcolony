@@ -15,11 +15,11 @@ parameters of visualizer:
 animation_delay = 0.915 # pause between displaying new iteration in seconds [default: 0.15]
 
 def initPopulation(rows, cols, acoordinates, defaultPosition=False):
-    popData = [[0.0 for j in range(0, cols)] for i in range(0, rows)]
+    popData = [[0.0 for i in range(1, cols-1)] for j in range(1, rows-1)]
     for coordinates in acoordinates:
-        coord_i = coordinates.get("j")-1 #switch j and i
-        coord_j = coordinates.get("i")-1
-        if coord_i in range(0, rows) and coord_j in range (0,cols):
+        coord_j = coordinates.get("j")-1 #switch j and i
+        coord_i = coordinates.get("i")-1
+        if coord_i in range(0, rows-2) and coord_j in range (0,cols-2):
             popData[coord_i][coord_j]=1.0 #Agent is not out of the env
     showDefaultPosition(acoordinates[0].get("j")-1, acoordinates[0].get("i")-1, defaultPosition)
     return popData
@@ -59,7 +59,7 @@ Hint: Colour settings:
 def showDefaultPosition(x,y,visible):
     lwidth=0
     if visible: lwidth=1
-    rect=mpatches.Rectangle((y-0.5,x-0.5),1,1, fill = False, color = "red",linewidth = lwidth)
+    rect=mpatches.Rectangle((x-0.5,y-0.5),1,1, fill = False, color = "red",linewidth = lwidth)
     pyplot.gca().add_patch(rect)
 
 def initVizualiser(numSteps, rowsEnv, colsEnv, aCoords):
