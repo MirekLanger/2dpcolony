@@ -44,7 +44,11 @@ class Colony:
 
     def add2environment(self):
         for element in self.toConcat2env:
-            self.envMatrix[element['position']['i']][element['position']['j']] += element['symbol']
+            SymToAdd=element['symbol']
+            if not self.envMatrix[element['position']['i']][element['position']['j']]: #FIXED - symbol must be in array 
+                self.envMatrix[element['position']['i']][element['position']['j']] = [SymToAdd]
+            else:
+                self.envMatrix[element['position']['i']][element['position']['j']].append(SymToAdd)
 
     def agentsAct(self):
         # generate a set of applicable programs for each agent
@@ -79,7 +83,13 @@ class Colony:
             vicinity = []
             for i in range(self.coordinates['i'] - 1, self.coordinates['i'] + 2):
                 for j in range(self.coordinates['j'] - 1, self.coordinates['j'] + 2):
-                    vicinity.append(self.colony.envMatrix[i][j])
+                    try:
+                        if (self.colony.envMatrix[i][j]): #FIXED - value must be 2D even if it is empty (otherwise the application crashes)
+                            vicinity.append(self.colony.envMatrix[i][j])
+                        else:
+                            vicinity.append(["",""])
+                    except:
+                        vicinity.append(["",""])
             return vicinity
 
         def getEnvironmentContent(self):
@@ -89,28 +99,32 @@ class Colony:
             allRulesAplicable = 1
             innerObjects = self.contents[:]
             envContent = self.getEnvironmentContent()[:]
+            envSymbol = "e"
+            if not envContent: #Agent out of environment
+                envContent=[""] #Fix of app crashing
+                envSymbol = ""
             for rule in program:
                 # get a type of the rule
                 # motion
+                print ("innerObjects:", innerObjects, "\nenvContent:", envContent)
                 if rule['operator'] in ['u', 'd', 'r', 'l']:
                     vicinity = self.getVicinity()
                     for i in range(self.vicinityLength):
                         #analyze the symbol... is it joker?
+                        print (rule['left'][i])
                         if rule['left'][i] in self.jokerSymbols.keys():
                             # joker symbol - at least one of the symbol must be in the environment
                             jokerNotInEnv = True
                             for jokerItem in self.jokerSymbols[rule['left'][i]]:
-                                if jokerItem in (vicinity[i] + ['e']):
+                                print("jokerItem",jokerItem, type(jokerItem), ">>vicinity::", vicinity)
+                                if jokerItem in (vicinity[i] + [envSymbol]):
                                     jokerNotInEnv = False
                             if jokerNotInEnv:
                                 allRulesAplicable=0
                                 break
                         else:
-                            print (i,self.getVicinity(), vicinity[i])
-                            if len(vicinity[i])==0: #vinicity symbol is empty because the agent is on the border of the environment
-                                allRulesAplicable = 0 #agent cannot move
-                                break
-                            if not (rule['left'][i] in (vicinity[i] + ['e'])):
+                            print ("rule['left'][i]:::", rule['left'][i], "vicinity[i]:::", vicinity[i])
+                            if not (rule['left'][i] in (vicinity[i] + [envSymbol])):
                                 allRulesAplicable = 0
                                 break
                 # evolving
@@ -163,9 +177,10 @@ class Colony:
                             self.contents += rule['right']
                             if rule['right'] != 'e':
                                 self.colony.envMatrix[self.coordinates['i']][self.coordinates['j']].remove(rule['right'])
+                            SymToEnv=rule['left']
                             insert2env = {
                                 'position':self.coordinates,
-                                'symbol':rule['left']
+                                'symbol':SymToEnv
                             }
                             self.colony.toConcat2env.append(insert2env)
 
