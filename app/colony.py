@@ -30,7 +30,7 @@ class Colony:
                 applicableRules.append(rule)
         return applicableRules
 
-    def evolveEnvironmet(self):
+    def evolveEnvironmet(self, log):
         for i in range(1, self.rowsEnv):
             for j in range(1, self.colsEnv):
                 applicableRules = self.getApplicableRules(i, j)
@@ -42,11 +42,11 @@ class Colony:
                     cell = cell + applyRule['right']
                     self.envMatrix[i][j] = cell
 
-    def add2environment(self):
+    def add2environment(self, log):
         for element in self.toConcat2env:
             self.envMatrix[element['position']['i']][element['position']['j']] += element['symbol']
 
-    def agentsAct(self):
+    def agentsAct(self, log):
         # generate a set of applicable programs for each agent
         for i in range(self.numAgents):
             self.agent[i].getApplicablePrograms()
@@ -58,11 +58,11 @@ class Colony:
             agentIndex = agentIndexList.pop(random.randrange(len(agentIndexList)))
             self.agent[agentIndex].applyRandomProgram()
 
-    def colonyStep(self):
+    def colonyStep(self, log=False):
         self.initComputationalStep()
-        self.agentsAct()
-        self.evolveEnvironmet()
-        self.add2environment()
+        self.agentsAct(log)
+        self.evolveEnvironmet(log)
+        self.add2environment(log)
 
     class Agent:
         def __init__(self, col, agentId, contents, programs, coordinates, jokerSymbols):
@@ -132,7 +132,7 @@ class Colony:
             for program in self.programs:
                 if self.isProgramApplicable(program):
                     self.applicablePrograms.append(program)
-            print(self.agentId, ' ', self.applicablePrograms)
+            #print(self.agentId, ' ', self.applicablePrograms)
 
         def applyRandomProgram(self):
             if self.applicablePrograms:

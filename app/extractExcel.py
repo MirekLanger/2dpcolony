@@ -31,10 +31,13 @@ def readParameters(wb):
 def readEnvironment(wb, rows, columns, rules):
     environmentSheet = wb['Environment']
     # make a boundary of the environmant from an empty strings
-    envMatrix = [['' for j in range(columns+2)] for i in range(rows+2)]
+    envMatrix = [[[] for j in range(columns + 2)] for i in range(rows + 2)]
     for i in range(1, rows + 1):
         for j in range(1, columns + 1):
-            envMatrix[i][j] = str(environmentSheet.cell(row=i, column=j).value).split(',')
+            if bool(environmentSheet.cell(row=i, column=j).value):
+                envMatrix[i][j] = str(environmentSheet.cell(row=i, column=j).value).split(',')
+            else:
+                envMatrix[i][j] = []
     envRulesSheet = wb['Environment_rules']
     envRules = []
     for i in range(1, rules + 1):
@@ -61,9 +64,13 @@ def readAgents(wb, rows, columns):
             agent['contents'] = str(agentsSheet.cell(row=lineIndex, column=5).value).split(',')
             row = int(agentsSheet.cell(row=lineIndex, column=7).value)
             col = int(agentsSheet.cell(row=lineIndex, column=9).value)
+            randomCol = False
+            randomRow = False
             if row == -1:
+                randomRow = True
                 row = random.randrange(1, rows)
             if col == -1:
+                randomCol= True
                 col = random.randrange(1, columns)
             agent['coordinates'] = {
                 'i': row,
@@ -78,12 +85,12 @@ def readAgents(wb, rows, columns):
             rule = {
                 'left': '',
                 'operator': agentsSheet.cell(row=lineIndex, column=4).value,
-                'right':agentsSheet.cell(row=lineIndex, column=5).value
+                'right':str(agentsSheet.cell(row=lineIndex, column=5).value)
             }
             if rule['operator'] in ['u', 'd', 'l', 'r']:
                 rule['left'] = str(agentsSheet.cell(row=lineIndex, column=3).value).split(',')
             else:
-                rule['left'] = agentsSheet.cell(row=lineIndex, column=3).value
+                rule['left'] = str(agentsSheet.cell(row=lineIndex, column=3).value)
             program.append(rule)
         # definition of a program ends
         if agentsSheet.cell(row=lineIndex, column=2).value == 'programEnd':
@@ -94,16 +101,27 @@ def readAgents(wb, rows, columns):
             id = agent['id']
             if copies > 1:
                 for i in range(copies):
+                    if randomRow:
+                        row = random.randrange(1, rows)
+                    else:
+                        row = agent['coordinates']['i']
+                    if randomCol:
+                        col = random.randrange(1, columns)
+                    else:
+                        col = agent['coordinates']['j']
+                    agent['coordinates'] = {
+                        'i': row,
+                        'j': col
+                    }
                     agent['id'] = id + '_' + str(i)
-                    agents.append(agent)
+                    agents.append(agent.copy())
             else:
                 agents.append(agent)
         lineIndex += 1
-    print(agents)
     return agents
 
 
-def getColonie(path):
+def getColony(path):
     wb = openpyxl.load_workbook(path, data_only=True)
     parameters = readParameters(wb)
     environment = readEnvironment(wb, parameters['envRows'], parameters['envColumns'], parameters['envRules'])

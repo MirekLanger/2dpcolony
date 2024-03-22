@@ -28,7 +28,7 @@ def updatePlot(step, initplot, popData, envMatrix, animation_delay, colors): # f
     initplot.set_data(popData)
     pyplot.title("Iteration "+str(step),
                 fontsize = 24)
-    print (colors)
+    #print (colors)
     markInterest(envMatrix, colors)
     pyplot.pause(animation_delay)
 
@@ -93,7 +93,7 @@ def initVizualiser(numSteps, rowsEnv, colsEnv, aCoords):
                 cmap = colormap) 
     def keypress(keyEvent):
         character = str(keyEvent.key)
-        print (character)
+        #print (character)
         if (character == "c"):
             sys.exit(0)
         if (character == "p"):
