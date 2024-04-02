@@ -50,10 +50,11 @@ def main(args=sys.argv[1:]):
         visualize.endOfVisualization(initplot, popData)
 
     print(colony.envMatrix) 
-    for a in colony.agent: #Print the last configuration of the agent / can be commented
-        print("Agent:")
-        print(a.contents)
-        print(a.coordinates.get("i"), a.coordinates.get("j"))
+    #for a in colony.agent: #Print the last configuration of the agent / can be commented
+    #    print("Agent:")
+    #    print(a.contents)
+    #    print(a.coordinates.get("i"), a.coordinates.get("j"))
+    
     #print(colony.agent[0].contents)
     #print(colony.agent[0].coordinates)
     #print(colony.agent[1].contents)

@@ -22,7 +22,8 @@ class Colony:
             allSymbols = 1
             for symbol in rule['left']:
                 if symbol in contents:
-                    contents.remove(symbol)
+                    #contents.remove(symbol) #Fixed - Env symbol cant be removed here
+                    allSymbols = 1
                 else:
                     allSymbols = 0
                     break
@@ -110,12 +111,10 @@ class Colony:
                 if rule['operator'] in ['u', 'd', 'r', 'l']:
                     vicinity = self.getVicinity()
                     for i in range(self.vicinityLength):
-                        #analyze the symbol... is it joker?
-                        print (rule['left'][i])
                         if rule['left'][i] in self.jokerSymbols.keys():
                             # joker symbol - at least one of the symbol must be in the environment
                             jokerNotInEnv = True
-                            for jokerItem in self.jokerSymbols[rule['left'][i]]:
+                            for jokerItem in self.jokerSymbols[rule['left'][i]]: ##Is 'in' OK here? 
                                 print("jokerItem",jokerItem, type(jokerItem), ">>vicinity::", vicinity)
                                 if jokerItem in (vicinity[i] + [envSymbol]):
                                     jokerNotInEnv = False
@@ -123,7 +122,7 @@ class Colony:
                                 allRulesAplicable=0
                                 break
                         else:
-                            print ("rule['left'][i]:::", rule['left'][i], "vicinity[i]:::", vicinity[i])
+                            print ("rule['left'][i]:::", rule['left'][i], "vicinity[i]:::", vicinity[i]+[envSymbol])
                             if not (rule['left'][i] in (vicinity[i] + [envSymbol])):
                                 allRulesAplicable = 0
                                 break
