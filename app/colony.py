@@ -21,9 +21,7 @@ class Colony:
         for rule in self.envRules:
             allSymbols = 1
             for symbol in rule['left']:
-                if symbol in contents:
-                    allSymbols = 1
-                else:
+                if symbol not in contents:
                     allSymbols = 0
                     break
             if allSymbols:
@@ -44,7 +42,7 @@ class Colony:
 
     def add2environment(self, log):
         for element in self.toConcat2env:
-            SymToAdd=element['symbol']
+            SymToAdd=element['symbol'] # check! environment is a string
             if not self.envMatrix[element['position']['i']][element['position']['j']]: #FIXED - symbol must be in array 
                 self.envMatrix[element['position']['i']][element['position']['j']] = [SymToAdd]
             else:
@@ -106,7 +104,7 @@ class Colony:
             for rule in program:
                 # get a type of the rule
                 # motion
-                print("innerObjects:", innerObjects, "\nenvContent:", envContent)
+                #print("innerObjects:", innerObjects, "\nenvContent:", envContent)
                 if rule['operator'] in ['u', 'd', 'r', 'l']:
                     vicinity = self.getVicinity()
                     for i in range(self.vicinityLength):
@@ -114,14 +112,14 @@ class Colony:
                             # joker symbol - at least one of the symbol must be in the environment
                             jokerNotInEnv = True
                             for jokerItem in self.jokerSymbols[rule['left'][i]]: ##Is 'in' OK here? 
-                                print("jokerItem",jokerItem, type(jokerItem), ">>vicinity::", vicinity)
+                                #print("jokerItem",jokerItem, type(jokerItem), ">>vicinity::", vicinity)
                                 if jokerItem in (vicinity[i] + [envSymbol]):
                                     jokerNotInEnv = False
                             if jokerNotInEnv:
                                 allRulesAplicable=0
                                 break
                         else:
-                            print ("rule['left'][i]:::", rule['left'][i], "vicinity[i]:::", vicinity[i]+[envSymbol])
+                            #print ("rule['left'][i]:::", rule['left'][i], "vicinity[i]:::", vicinity[i]+[envSymbol])
                             if not (rule['left'][i] in (vicinity[i] + [envSymbol])):
                                 allRulesAplicable = 0
                                 break

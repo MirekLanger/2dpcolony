@@ -9,7 +9,7 @@ Select the visualizer:
 1 = Tkinter-based visualizer (more detailed)
 2 = PyGame-based visualizer (faster)
 """
-visualizer=2
+visualizer=1
 
 def main(args=sys.argv[1:]):
     if len(args):
@@ -21,7 +21,7 @@ def main(args=sys.argv[1:]):
     colony = col.Colony(colonyDefinition['environment'], colonyDefinition['agents'],
                         colonyDefinition['parameters']['jokerSymbols']
                         )
-    print(colonyDefinition)
+    #print(colonyDefinition)
     step = 0
     steps = colonyDefinition['parameters']['steps']
     agentCoords = [o.coordinates for o in colony.agent]
